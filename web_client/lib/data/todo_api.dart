@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:web_client/api/create_todo_request.dart';
+import 'package:web_client/api/update_todo_request.dart';
 import 'package:web_client/domain/todo_model.dart';
 
 class TodoApi {
@@ -9,7 +10,7 @@ class TodoApi {
 
   Future<Iterable<TodoModel>> getTodos() async {
     final response =
-        await _dio.get<List<dynamic>>('https://localhost:8080/todo');
+        await _dio.get<List<dynamic>>('http://localhost:8080/todo');
     final json = response.data as List<dynamic>;
 
     return json.map((e) {
@@ -19,8 +20,16 @@ class TodoApi {
   }
 
   Future<void> saveTodo(String title, bool isCompleted) async {
-    await _dio.post<Map<String, dynamic>>('https://localhost:8080/create',
+    await _dio.post<Map<String, dynamic>>('http://localhost:8080/create',
         data: CreateTodoRequest(
+          isCompleted: isCompleted,
+          title: title,
+        ).toJson());
+  }
+
+  Future<void> updateTodo(int id, String title, bool isCompleted) async {
+    await _dio.put<Map<String, dynamic>>('http://localhost:8080/todo/$id',
+        data: UpdateTodoRequest(
           isCompleted: isCompleted,
           title: title,
         ).toJson());

@@ -16,9 +16,11 @@ class TodoRepository {
   /// Получить из хранилища все задачи
   Future<Iterable<TodoModel>> fetchAll() => _todoApi.getTodos();
 
-  Future<Iterable<TodoModel>> completeTodo(TodoModel todo) =>
-      _todoApi.getTodos();
+  Future<void> completeTodo(TodoModel todo) async {
+    await _todoApi.updateTodo(todo.id, todo.title, true);
+  }
 
-  Future<Iterable<TodoModel>> unCompleteTodo(TodoModel todo) =>
-      _todoApi.getTodos();
+  Future<void> unCompleteTodo(TodoModel todo) async {
+    await _todoApi.updateTodo(todo.id, todo.title, false);
+  }
 }

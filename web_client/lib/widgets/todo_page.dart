@@ -86,11 +86,12 @@ class TodoPageState extends State<TodoPage> {
   }
 
   Future<void> _createTask() async {
-    setState(() async {
-      await DI.todoRepository.create(
-        title: 'Новая задача',
-        isCompleted: false,
-      );
+    await DI.todoRepository.create(
+      title: 'Новая задача',
+      isCompleted: false,
+    );
+
+    setState(() {
       _todoListFetcher = DI.todoRepository.fetchAll()
         ..then((value) => selectedTodo = value.lastOrNull);
 
