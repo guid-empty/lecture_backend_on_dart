@@ -9,7 +9,7 @@ class TodoApi {
 
   Future<Iterable<TodoModel>> getTodos() async {
     final response =
-        await _dio.get<List<dynamic>>('https://localhost:8080/todo');
+        await _dio.get<List<dynamic>>('http://localhost:8080/todo');
     final json = response.data as List<dynamic>;
 
     return json.map((e) {
@@ -19,7 +19,7 @@ class TodoApi {
   }
 
   Future<void> saveTodo(String title, bool isCompleted) async {
-    await _dio.post<Map<String, dynamic>>('https://localhost:8080/create',
+    await _dio.post<Map<String, dynamic>>('http://localhost:8080/create',
         data: CreateTodoRequest(
           isCompleted: isCompleted,
           title: title,
