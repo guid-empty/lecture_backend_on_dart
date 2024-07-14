@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: OpenApiService Demo Generation
+  description: OpenApiService Demo Description
+  termsOfService: Terms of use
+  version: 1.0.0
+servers:
+  - url: "localhost:8080"
+    description: There is openapi server used for Demo only
+paths:
+  /order:
+    get:
+      tags:
+        - OrderController
+      summary: Возвращает полный список заказов
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: getOrderList
+      responses:
+        200:
+          description: "Operation completed!"
+    post:
+      tags:
+        - OrderController
+      summary: "Создает заказ на основе пепреданного сообщения [CreateOrderQueryDto]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderQueryDto"
+      responses:
+        200:
+          description: "Operation completed!"
+  /order/<orderId>:
+    put:
+      tags:
+        - OrderController
+      summary: "Обновляет заказ по id, указанный в схеме маршрута через [orderId]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: updateOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Operation completed!"
+    delete:
+      tags:
+        - OrderController
+      summary: "Удаляет заказ по id, указанный в схеме маршрута через [orderId]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: deleteOrder
+      parameters:
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Operation completed!"
+  /user:
+    get:
+      tags:
+        - UserController
+      summary: Возвращает полный список пользователей
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: getUserList
+      responses:
+        200:
+          description: "Operation completed!"
+    post:
+      tags:
+        - UserController
+      summary: "Создает заказа на основе пепреданного сообщения [CreateUserQueryDto]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: createUser
+      responses:
+        200:
+          description: "Operation completed!"
+  /user/<userId>:
+    put:
+      tags:
+        - UserController
+      summary: "Обновляет пользователя по id, указанный в схеме маршрута через [userId]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Operation completed!"
+    delete:
+      tags:
+        - UserController
+      summary: "Удаляет пользователя по id, указанном в схеме маршрута через [userId]"
+      description: "Возвращает 200, если все ок, в противном случае вернет код ошибки"
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Operation completed!"
+components:
+  schemas:
+    CreateOrderQueryDto:
+      type: object
+      properties:
+        price:
+          description: Order price
+          type: number
+          format: double
+      required:
+        - price
+tags:
+  - name: OrderController
+  - name: UserController
