@@ -37,6 +37,13 @@
             </list>
           </value>
         </entry>
+        <entry key="buffer">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/buffer-1.2.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="build">
           <value>
             <list>
@@ -90,6 +97,13 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/built_value-8.9.2/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="charcode">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/charcode-1.3.1/lib" />
             </list>
           </value>
         </entry>
@@ -317,6 +331,13 @@
             </list>
           </value>
         </entry>
+        <entry key="postgres">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/postgres-3.2.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="pub_semver">
           <value>
             <list>
@@ -328,6 +349,20 @@
           <value>
             <list>
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/pubspec_parse-1.3.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="sasl_scram">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/sasl_scram-0.1.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="saslprep">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/saslprep-1.0.3/lib" />
             </list>
           </value>
         </entry>
@@ -506,6 +541,13 @@
             </list>
           </value>
         </entry>
+        <entry key="unorm_dart">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/unorm_dart-0.3.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="vm_service">
           <value>
             <list>
@@ -556,6 +598,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/args-2.5.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/async-2.11.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/boolean_selector-2.1.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/buffer-1.2.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/build-2.4.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/build_config-1.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/build_daemon-4.0.1/lib" />
@@ -564,6 +607,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/build_runner_core-7.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/built_collection-5.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/built_value-8.9.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/charcode-1.3.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/code_builder-4.10.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/collection-1.18.0/lib" />
@@ -596,8 +640,11 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/package_config-2.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path-1.9.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pool-1.5.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/postgres-3.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pub_semver-2.1.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/pubspec_parse-1.3.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/sasl_scram-0.1.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/saslprep-1.0.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shelf-1.4.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shelf_cors_headers-0.1.5/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/shelf_open_api-1.1.0/lib" />
@@ -623,6 +670,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/test_core-0.6.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/timing-1.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/typed_data-1.3.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/unorm_dart-0.3.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/vm_service-14.2.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/watcher-1.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/web-0.5.1/lib" />

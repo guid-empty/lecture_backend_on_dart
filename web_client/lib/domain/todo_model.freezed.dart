@@ -22,6 +22,7 @@ TodoModel _$TodoModelFromJson(Map<String, dynamic> json) {
 mixin _$TodoModel {
   int get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_completed')
   bool get isCompleted => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +36,8 @@ abstract class $TodoModelCopyWith<$Res> {
   factory $TodoModelCopyWith(TodoModel value, $Res Function(TodoModel) then) =
       _$TodoModelCopyWithImpl<$Res, TodoModel>;
   @useResult
-  $Res call({int id, String title, bool isCompleted});
+  $Res call(
+      {int id, String title, @JsonKey(name: 'is_completed') bool isCompleted});
 }
 
 /// @nodoc
@@ -80,7 +82,8 @@ abstract class _$$TodoModelImplCopyWith<$Res>
       __$$TodoModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String title, bool isCompleted});
+  $Res call(
+      {int id, String title, @JsonKey(name: 'is_completed') bool isCompleted});
 }
 
 /// @nodoc
@@ -119,7 +122,9 @@ class __$$TodoModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TodoModelImpl implements _TodoModel {
   const _$TodoModelImpl(
-      {required this.id, required this.title, required this.isCompleted});
+      {required this.id,
+      required this.title,
+      @JsonKey(name: 'is_completed') required this.isCompleted});
 
   factory _$TodoModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoModelImplFromJson(json);
@@ -129,6 +134,7 @@ class _$TodoModelImpl implements _TodoModel {
   @override
   final String title;
   @override
+  @JsonKey(name: 'is_completed')
   final bool isCompleted;
 
   @override
@@ -167,9 +173,10 @@ class _$TodoModelImpl implements _TodoModel {
 
 abstract class _TodoModel implements TodoModel {
   const factory _TodoModel(
-      {required final int id,
-      required final String title,
-      required final bool isCompleted}) = _$TodoModelImpl;
+          {required final int id,
+          required final String title,
+          @JsonKey(name: 'is_completed') required final bool isCompleted}) =
+      _$TodoModelImpl;
 
   factory _TodoModel.fromJson(Map<String, dynamic> json) =
       _$TodoModelImpl.fromJson;
@@ -179,6 +186,7 @@ abstract class _TodoModel implements TodoModel {
   @override
   String get title;
   @override
+  @JsonKey(name: 'is_completed')
   bool get isCompleted;
   @override
   @JsonKey(ignore: true)

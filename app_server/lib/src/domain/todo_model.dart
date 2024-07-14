@@ -8,7 +8,7 @@ class TodoModel with _$TodoModel {
   const factory TodoModel({
     required int id,
     required String title,
-    required bool isCompleted,
+    @JsonKey(name: 'is_completed') required bool isCompleted,
   }) = _TodoModel;
 
   factory TodoModel.fromJson(Map<String, dynamic> json) =>

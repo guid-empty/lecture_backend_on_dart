@@ -3,13 +3,23 @@ import 'dart:io';
 import 'package:app_server/src/data/todo_repository.dart';
 import 'package:app_server/src/logging/logger.dart';
 import 'package:app_server/src/router/todo_controller.dart';
+import 'package:postgres/postgres.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart';
 import 'package:shelf_cors_headers/shelf_cors_headers.dart' as cors;
 
 Future<void> main() async {
   await LoggerSettings.initLogging(instancePrefix: 'SHMR Server');
-  final todoRepository = TodoRepository();
+  final connection = await Connection.open(
+      Endpoint(
+        host: 'localhost',
+        database: 'shmr_todolist',
+        username: 'postgres',
+        password: 'password',
+      ),
+      settings: ConnectionSettings(sslMode: SslMode.disable));
+
+  final todoRepository = TodoRepository(connection: connection);
 
   final handler = Cascade()
       .add(TodoController(todoRepository: todoRepository).router)

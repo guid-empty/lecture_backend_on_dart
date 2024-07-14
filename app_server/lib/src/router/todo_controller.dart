@@ -34,7 +34,7 @@ class TodoController {
     return _wrapResponse(
       () async => Response.ok(
         jsonEncode(
-          _todoRepository.create(
+          await _todoRepository.create(
             title: createTodoRequest.title,
             isCompleted: createTodoRequest.isCompleted,
           ),
@@ -64,7 +64,7 @@ class TodoController {
     return _wrapResponse(
       () async => Response.ok(
         jsonEncode(
-          _todoRepository.fetchAll(),
+          await _todoRepository.fetchAll(),
         ),
         headers: jsonContentHeaders,
       ),
