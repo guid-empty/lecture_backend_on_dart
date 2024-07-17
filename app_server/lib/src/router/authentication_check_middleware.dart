@@ -49,7 +49,7 @@ abstract class AuthenticationCheckMiddleware {
                 },
               );
             }
-          } else {
+          } else if (!request.url.path.contains('ws/connect')) {
             return _getUnauthorizedResponse(request);
           }
         } catch (_) {
