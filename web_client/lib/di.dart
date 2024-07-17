@@ -27,6 +27,17 @@ class DI {
       '',
     );
 
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          options.headers['provider_user_id'] =
+              authenticationService.currentUser?.uid;
+
+          handler.next(options);
+        },
+      ),
+    );
+
     return dio;
   }
 }

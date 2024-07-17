@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_server/src/data/todo_repository.dart';
 import 'package:app_server/src/logging/logger.dart';
+import 'package:app_server/src/router/authentication_check_middleware.dart';
 import 'package:app_server/src/router/todo_controller.dart';
 import 'package:postgres/postgres.dart';
 import 'package:shelf/shelf.dart';
@@ -26,14 +27,15 @@ Future<void> main() async {
       .handler;
 
   final pipeline = Pipeline()
-      .addMiddleware(cors.corsHeaders())
-      // .addMiddleware(cors.corsHeaders(headers: {
-      //   HttpHeaders.accessControlAllowHeadersHeader: '*',
-      //   HttpHeaders.accessControlAllowMethodsHeader:
-      //       'HEAD, GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      //   HttpHeaders.accessControlAllowOriginHeader: '*',
-      // }))
+      .addMiddleware(cors.corsHeaders(headers: {
+        HttpHeaders.accessControlAllowHeadersHeader: '*',
+        HttpHeaders.accessControlAllowMethodsHeader:
+            'HEAD, GET, POST, PUT, DELETE, PATCH, OPTIONS',
+        HttpHeaders.accessControlAllowOriginHeader: '*',
+      }))
       .addMiddleware(logRequests())
+      .addMiddleware(
+          AuthenticationCheckMiddleware.createAuthenticationCheckMiddleware())
       .addHandler(handler);
   logger.info('server is ready to start');
   await serve(pipeline, InternetAddress.anyIPv4, 8080);

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:app_server/src/api/create_todo_request.dart';
 import 'package:app_server/src/api/update_todo_request.dart';
 import 'package:app_server/src/data/todo_repository.dart';
+import 'package:app_server/src/logging/logger.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -31,10 +32,12 @@ class TodoController {
     final createTodoRequest = CreateTodoRequest.fromJson(
       jsonDecode(body),
     );
+    final userId = request.context['user_id'] as String;
     return _wrapResponse(
       () async => Response.ok(
         jsonEncode(
           await _todoRepository.create(
+            userId: userId,
             title: createTodoRequest.title,
             isCompleted: createTodoRequest.isCompleted,
           ),
@@ -61,10 +64,11 @@ class TodoController {
 
   @Route.get('/todo')
   Future<Response> getTodoList(Request request) async {
+    final userId = request.context['user_id'] as String;
     return _wrapResponse(
       () async => Response.ok(
         jsonEncode(
-          await _todoRepository.fetchAll(),
+          await _todoRepository.fetchAll(userId),
         ),
         headers: jsonContentHeaders,
       ),
@@ -102,6 +106,7 @@ class TodoController {
       final result = await createBody();
       return result;
     } on Object catch (e, s) {
+      logger.severe(e, s);
       return Response.badRequest(
         body: jsonEncode(
           {

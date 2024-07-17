@@ -102,7 +102,7 @@ class TodoPageState extends State<TodoPage> {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasError) {}
 
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }),
       floatingActionButton: FloatingActionButton(
         key: const ValueKey('todo_creation'),
