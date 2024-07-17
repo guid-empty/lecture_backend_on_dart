@@ -1,0 +1,15 @@
+phantom:
+  address: host.docker.internal:8080
+  uris:
+      - "/benchmark"
+  ssl: false
+  load_profile:
+    load_type: rps
+    schedule: const(100, 10s)
+console:
+  enabled: true
+telegraf:
+  enabled: false
+overload:
+  enabled: true
+  token_file: "tokenfile.txt"

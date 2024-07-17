@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_session_controller.dart';
+part of 'benchmark_controller.dart';
 
 // **************************************************************************
 // ShelfRouterGenerator
 // **************************************************************************
 
-Router _$UserSessionControllerRouter(UserSessionController service) {
+Router _$BenchmarkControllerRouter(BenchmarkController service) {
   final router = Router();
   router.add(
     'GET',
-    r'/ws/connect/<sessionId>',
-    service.connect,
+    r'/benchmark',
+    service.createBenchmark,
   );
   return router;
 }
