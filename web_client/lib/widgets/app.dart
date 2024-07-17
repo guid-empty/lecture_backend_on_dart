@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_client/di.dart';
 import 'package:web_client/domain/environment.dart';
+import 'package:web_client/widgets/login_page.dart';
 import 'package:web_client/widgets/todo_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -10,14 +11,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'Todo List',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
-          useMaterial3: true,
-        ),
-        home: TodoPage(
-          title: 'Today Tasks',
-          todoRepository: DI.todoRepository,
-        ),
-      );
+      title: 'Todo List',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
+        useMaterial3: true,
+      ),
+      onGenerateRoute: (settings) {
+        if (DI.authenticationService.isAuthenticated) {
+          return MaterialPageRoute(
+            settings: settings,
+            builder: (context) => TodoPage(
+              title: 'Today Tasks',
+              realtimeGateway: DI.realtimeGateway,
+              authenticationService: DI.authenticationService,
+              todoRepository: DI.todoRepository,
+            ),
+          );
+        }
+
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) =>
+              LoginPage(authService: DI.authenticationService),
+        );
+      });
 }

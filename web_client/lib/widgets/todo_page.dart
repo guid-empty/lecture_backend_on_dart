@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:web_client/data/todo_repository.dart';
 import 'package:web_client/di.dart';
 import 'package:web_client/domain/todo_model.dart';
+import 'package:web_client/services/authentication_service.dart';
+import 'package:web_client/services/realtime_gateway.dart';
 import 'package:web_client/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
   final String title;
   final TodoRepository todoRepository;
+  final AuthenticationService authenticationService;
+  final RealtimeGateway realtimeGateway;
 
   const TodoPage({
+    required this.realtimeGateway,
+    required this.authenticationService,
     required this.todoRepository,
     required this.title,
     super.key,
@@ -27,11 +33,46 @@ class TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final displayName = widget.authenticationService.currentUser?.displayName;
+    final avatarUrl = widget.authenticationService.currentUser?.photoURL;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Row(
+          children: [
+            Expanded(child: Text(widget.title)),
+            GestureDetector(
+              onTap: () {
+                widget.realtimeGateway.sendMessage({
+                  'sign_out':
+                      widget.authenticationService.currentUser?.uid ?? '',
+                });
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: theme.primaryColor,
+                      backgroundImage:
+                          avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                      child:
+                          avatarUrl == null ? Text(displayName ?? '?') : null,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('Sign out', style: TextStyle(fontSize: 12)),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       body: FutureBuilder<Iterable<TodoModel>>(
           future: _todoListFetcher,
@@ -67,7 +108,7 @@ class TodoPageState extends State<TodoPage> {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasError) {}
 
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }),
       floatingActionButton: FloatingActionButton(
         key: const ValueKey('todo_creation'),
@@ -83,6 +124,14 @@ class TodoPageState extends State<TodoPage> {
   void initState() {
     super.initState();
     _todoListFetcher = DI.todoRepository.fetchAll();
+    widget.realtimeGateway.onMessage.listen((message) {
+      if (message.containsKey('close_session')) {
+        widget.authenticationService.signOut().then((_) {
+          widget.realtimeGateway.dispose();
+          Navigator.of(context).pushReplacementNamed('/');
+        });
+      }
+    });
   }
 
   Future<void> _createTask() async {

@@ -1,5 +1,4 @@
 import 'package:app_server/src/domain/todo_model.dart';
-import 'package:app_server/src/logging/logger.dart';
 import 'package:collection/collection.dart';
 import 'package:postgres/postgres.dart';
 
@@ -20,11 +19,15 @@ class TodoRepository {
   }) : _connection = connection;
 
   /// Получить из хранилища все задачи в отсортированном порядке
-  Future<Iterable<TodoModel>> fetchAll() async {
+  Future<Iterable<TodoModel>> fetchAll(String userId) async {
     final result = await _connection.execute(
-      Sql.named('SELECT * FROM todolist ORDER BY id ASC'),
-    );
-    logger.info(result.first.toColumnMap());
+        Sql.named('SELECT * FROM todolist_with_user_id '
+            'WHERE user_id = @userId '
+            'ORDER BY id ASC'),
+        parameters: {
+          'userId': userId,
+        });
+
     final models =
         result.map((e) => TodoModel.fromJson(e.toColumnMap())).toList();
     return models;
@@ -32,16 +35,19 @@ class TodoRepository {
 
   /// Создать новую задачу
   Future<TodoModel> create({
+    required String userId,
     required String title,
     bool isCompleted = false,
   }) async {
     final result = await _connection.execute(
-        Sql.named('INSERT INTO todolist (title, is_completed) '
-            'VALUES (@title, @isCompleted) '
+        Sql.named(
+            'INSERT INTO todolist_with_user_id (user_id, title, is_completed) '
+            'VALUES (@userId, @title, @isCompleted) '
             'RETURNING *'),
         parameters: {
           'title': title,
           'isCompleted': isCompleted,
+          'userId': userId,
         });
     final serializedState = result.first.toColumnMap();
     return TodoModel.fromJson(serializedState);
