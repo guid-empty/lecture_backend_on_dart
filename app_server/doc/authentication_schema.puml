@@ -1,0 +1,23 @@
+@startuml
+title Процесс аутентификации пользователя и получение JWT Token
+
+'https://plantuml.com/sequence-diagram
+participant "Web Client \nAuthService" as AuthenticationService #5232c5
+participant "App Server" as AppServer #e46a65
+box Firebase #faffff
+participant Firebase #f2b96d
+participant FirebaseAdminSDK #f2b96d
+end box
+autonumber "<b>[00]"
+
+AuthenticationService -> Firebase ++: Authentication Request
+return: Объект User с токеном
+
+== Проверка JWT ==
+AuthenticationService -> AuthenticationService: извлекаем JWT токен
+AuthenticationService -> AppServer: checkToken
+AppServer -> FirebaseAdminSDK ++: verifyIdToken(): проверяем токен\nв нашем проекте firebase
+return: isVerified
+
+
+@enduml

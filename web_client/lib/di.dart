@@ -30,8 +30,7 @@ class DI {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers['provider_user_id'] =
-              authenticationService.currentUser?.uid;
+          options.headers['jwt_token'] = authenticationService.token;
 
           handler.next(options);
         },

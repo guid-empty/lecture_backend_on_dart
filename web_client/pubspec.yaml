@@ -20,6 +20,7 @@ dependencies:
   firebase_core: ^3.2.0
   firebase_auth: ^5.1.2
   logger: ^2.4.0
+  dart_jsonwebtoken: ^2.14.0
 
 
 dev_dependencies:

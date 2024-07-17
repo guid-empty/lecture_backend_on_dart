@@ -32,18 +32,22 @@ class TodoController {
     final createTodoRequest = CreateTodoRequest.fromJson(
       jsonDecode(body),
     );
-    final userId = request.context['user_id'] as String;
+
     return _wrapResponse(
-      () async => Response.ok(
-        jsonEncode(
-          await _todoRepository.create(
-            userId: userId,
-            title: createTodoRequest.title,
-            isCompleted: createTodoRequest.isCompleted,
+      () async {
+        final userId = request.context['user_id'] as String;
+
+        return Response.ok(
+          jsonEncode(
+            await _todoRepository.create(
+              userId: userId,
+              title: createTodoRequest.title,
+              isCompleted: createTodoRequest.isCompleted,
+            ),
           ),
-        ),
-        headers: jsonContentHeaders,
-      ),
+          headers: jsonContentHeaders,
+        );
+      },
     );
   }
 
@@ -64,14 +68,17 @@ class TodoController {
 
   @Route.get('/todo')
   Future<Response> getTodoList(Request request) async {
-    final userId = request.context['user_id'] as String;
     return _wrapResponse(
-      () async => Response.ok(
-        jsonEncode(
-          await _todoRepository.fetchAll(userId),
-        ),
-        headers: jsonContentHeaders,
-      ),
+      () async {
+        final userId = request.context['user_id'] as String;
+
+        return Response.ok(
+          jsonEncode(
+            await _todoRepository.fetchAll(userId),
+          ),
+          headers: jsonContentHeaders,
+        );
+      },
     );
   }
 
