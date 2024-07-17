@@ -1,9 +1,16 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart' as jsonwebtoken;
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:uuid/uuid.dart';
 import 'package:web_client/logging/logger.dart';
+import 'package:web_client/services/realtime_gateway.dart';
 
 class AuthenticationService {
+  final RealtimeGateway _realtimeGateway;
+  final String windowKey = const Uuid().v4();
   String? _token;
+
+  AuthenticationService({required RealtimeGateway realtimeGateway})
+      : _realtimeGateway = realtimeGateway;
 
   auth.User? get currentUser => auth.FirebaseAuth.instance.currentUser;
 
@@ -12,6 +19,17 @@ class AuthenticationService {
 
   Future<void> initialize() async {
     _token = isAuthenticated ? await currentUser?.getIdToken() : null;
+    if (isAuthenticated) {
+      /// ======================================================================
+      /// sessionId содержит два идентификатора - userId + Id окна браузера,
+      /// разделенные символом ":"
+
+      final userId = currentUser?.uid ?? 'unknown';
+      final sessionId = '$userId:$windowKey';
+      await _initRealtimeGateway(sessionId: sessionId);
+
+      /// ======================================================================
+    }
   }
 
   /// Если необходимо будет получить дополнительные данные от пользователя,
@@ -30,8 +48,17 @@ class AuthenticationService {
           await auth.FirebaseAuth.instance.signInWithPopup(googleProvider);
 
       user = userCredential.user;
-      final token = _token = await user?.getIdToken();
+      final userId = user?.uid ?? 'unknown';
 
+      /// ======================================================================
+      /// sessionId содержит два идентификатора - userId + Id окна браузера,
+      /// разделенные символом ":"
+      final sessionId = '$userId:$windowKey';
+      await _initRealtimeGateway(sessionId: sessionId);
+
+      /// ======================================================================
+
+      final token = _token = await user?.getIdToken();
       if (token != null) {
         final jwt = jsonwebtoken.JWT.decode(token);
         logger.debug(
@@ -50,5 +77,13 @@ class AuthenticationService {
       await auth.FirebaseAuth.instance.signOut();
       _token = null;
     }
+  }
+
+  /// sessionId содержит два идентификатора - userId + Id окна браузера,
+  /// разделенные символом ":"
+  Future<void> _initRealtimeGateway({
+    required String sessionId,
+  }) async {
+    await _realtimeGateway.connect(sessionId: sessionId);
   }
 }

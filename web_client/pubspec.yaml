@@ -21,6 +21,8 @@ dependencies:
   firebase_auth: ^5.1.2
   logger: ^2.4.0
   dart_jsonwebtoken: ^2.14.0
+  web_socket_channel: ^2.4.5
+  uuid: ^4.4.2
 
 
 dev_dependencies:

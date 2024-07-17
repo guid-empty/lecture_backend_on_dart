@@ -28,15 +28,18 @@ class UserSessionController {
 
   final _websocketConnections = <String, WebSocketSession>{};
 
-  @Route.get('/ws/connect/<token>')
-  Future<Response> connect(Request request, String token) async {
+  /// sessionId содержит два идентификатора - userId + Id окна браузера,
+  /// разделенные символом ":"
+  @Route.get('/ws/connect/<sessionId>')
+  Future<Response> connect(Request request, String sessionId) async {
     return _wrapResponse(
       () async {
         return webSocketHandler((ws) => WebSocketSession(
               onOpen: (ws) {
-                logger.t('onOpen handler: connection established with $token');
-                _websocketConnections[token]?.close();
-                _websocketConnections[token] = ws;
+                logger.t(
+                    'onOpen handler: connection established with $sessionId');
+                _websocketConnections[sessionId]?.close();
+                _websocketConnections[sessionId] = ws;
               },
               onClose: (ws) {
                 final entries = _websocketConnections.entries
@@ -51,18 +54,40 @@ class UserSessionController {
               },
               onMessage: (ws, dynamic data) {
                 logger.t('onMessage handler: $data received');
-                _processWebSocketMessage(data, token);
+                _processWebSocketMessage(data, sessionId);
               },
             )..init(ws)).call(request);
       },
     );
   }
 
-  void _processWebSocketMessage(dynamic data, String token) {
+  /// sessionId содержит два идентификатора - userId + Id окна браузера,
+  /// разделенные символом "-"
+  void _processWebSocketMessage(dynamic data, String sessionId) {
     try {
       final message = jsonDecode(data) as Map<String, dynamic>;
-      if (message.containsKey('ping')) {
-        _websocketConnections[token]?.send('pong');
+      if (message.containsKey('sign_out')) {
+        final userId = message['sign_out'];
+
+        for (final entry in _websocketConnections.entries) {
+          //  для всех сокетов, которые были открыты для пользователя
+          if (entry.key.startsWith(userId)) {
+            final windowKey = entry.key.split(':')[1];
+
+            _websocketConnections[entry.key]?.send(
+              jsonEncode(
+                {
+                  'close_session': true,
+                  'user_id': userId,
+                  'window_key': windowKey,
+                },
+              ),
+            );
+          }
+          _websocketConnections[entry.key]?.close();
+        }
+        _websocketConnections
+            .removeWhere((key, value) => key.startsWith(userId));
       }
     } on Object catch (e, s) {
       logger.severe('Processing failed for message $data', e, s);
@@ -76,7 +101,10 @@ class UserSessionController {
       final result = await createBody();
       return result;
     } on Object catch (e, s) {
-      logger.severe(e, s);
+      if (e is! HijackException) {
+        logger.severe(e, e, s);
+      }
+
       return Response.badRequest(
         body: jsonEncode(
           {

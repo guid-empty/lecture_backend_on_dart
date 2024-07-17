@@ -3,14 +3,17 @@ import 'package:web_client/data/todo_repository.dart';
 import 'package:web_client/di.dart';
 import 'package:web_client/domain/todo_model.dart';
 import 'package:web_client/services/authentication_service.dart';
+import 'package:web_client/services/realtime_gateway.dart';
 import 'package:web_client/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
   final String title;
   final TodoRepository todoRepository;
   final AuthenticationService authenticationService;
+  final RealtimeGateway realtimeGateway;
 
   const TodoPage({
+    required this.realtimeGateway,
     required this.authenticationService,
     required this.todoRepository,
     required this.title,
@@ -40,9 +43,12 @@ class TodoPageState extends State<TodoPage> {
           children: [
             Expanded(child: Text(widget.title)),
             GestureDetector(
-              onTap: () => DI.authenticationService
-                  .signOut()
-                  .then((_) => Navigator.of(context).pushReplacementNamed('/')),
+              onTap: () {
+                widget.realtimeGateway.sendMessage({
+                  'sign_out':
+                      widget.authenticationService.currentUser?.uid ?? '',
+                });
+              },
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -118,6 +124,14 @@ class TodoPageState extends State<TodoPage> {
   void initState() {
     super.initState();
     _todoListFetcher = DI.todoRepository.fetchAll();
+    widget.realtimeGateway.onMessage.listen((message) {
+      if (message.containsKey('close_session')) {
+        widget.authenticationService.signOut().then((_) {
+          widget.realtimeGateway.dispose();
+          Navigator.of(context).pushReplacementNamed('/');
+        });
+      }
+    });
   }
 
   Future<void> _createTask() async {

@@ -1,4 +1,4 @@
-import 'package:web_client/data/todo_api.dart';
+import 'package:web_client/api/todo_api.dart';
 import 'package:web_client/domain/todo_model.dart';
 
 class TodoRepository {

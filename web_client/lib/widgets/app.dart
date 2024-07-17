@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
             settings: settings,
             builder: (context) => TodoPage(
               title: 'Today Tasks',
+              realtimeGateway: DI.realtimeGateway,
               authenticationService: DI.authenticationService,
               todoRepository: DI.todoRepository,
             ),
