@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:web_client/data/todo_repository.dart';
 import 'package:web_client/di.dart';
 import 'package:web_client/domain/todo_model.dart';
+import 'package:web_client/services/authentication_service.dart';
 import 'package:web_client/widgets/todo_item.dart';
 
 class TodoPage extends StatefulWidget {
   final String title;
   final TodoRepository todoRepository;
+  final AuthenticationService authenticationService;
 
   const TodoPage({
+    required this.authenticationService,
     required this.todoRepository,
     required this.title,
     super.key,
@@ -27,11 +30,43 @@ class TodoPageState extends State<TodoPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final displayName = widget.authenticationService.currentUser?.displayName;
+    final avatarUrl = widget.authenticationService.currentUser?.photoURL;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Row(
+          children: [
+            Expanded(child: Text(widget.title)),
+            GestureDetector(
+              onTap: () => DI.authenticationService
+                  .signOut()
+                  .then((_) => Navigator.of(context).pushReplacementNamed('/')),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.white,
+                    child: CircleAvatar(
+                      radius: 18,
+                      backgroundColor: theme.primaryColor,
+                      backgroundImage:
+                          avatarUrl != null ? NetworkImage(avatarUrl) : null,
+                      child:
+                          avatarUrl == null ? Text(displayName ?? '?') : null,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text('Sign out', style: TextStyle(fontSize: 12)),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       body: FutureBuilder<Iterable<TodoModel>>(
           future: _todoListFetcher,
