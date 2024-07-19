@@ -36,7 +36,7 @@ jobs:
 
       - name: Tag and push nginx/db/adminer images to yandex cloud registry
         run: |
-          docker tag postgres:15.2
+          docker pull postgres:15.2
           docker tag postgres:15.2 cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
           docker pull adminer:4.8.1
