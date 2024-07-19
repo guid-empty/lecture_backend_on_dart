@@ -34,17 +34,20 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
 
-      - name: Build docker images
-        run: docker-compose -f docker-compose.yaml build
-
-      - name: Push nginx/db/adminer to yandex cloud registry
+      - name: Tag and push nginx/db/adminer images to yandex cloud registry
         run: |
+          docker tag postgres:15.2
           docker tag postgres:15.2 cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
+          docker pull adminer:4.8.1
           docker tag adminer:4.8.1 cr.yandex/crpld28mq3vgl8ej0eap/server-side-adminer:latest
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-adminer:latest
+          docker pull nginx:1.22.0
           docker tag nginx:1.22.0 cr.yandex/crpld28mq3vgl8ej0eap/server-side-nginx:latest
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-nginx:latest
+
+      - name: Build docker images
+        run: docker-compose -f docker-compose.yaml build
 
       - name: Push app-server to yandex cloud registry
         run: |
