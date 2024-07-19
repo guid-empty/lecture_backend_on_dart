@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app_server/src/data/todo_repository.dart';
 import 'package:app_server/src/logging/logger.dart';
 import 'package:app_server/src/router/authentication_check_middleware.dart';
+import 'package:app_server/src/router/benchmark_controller.dart';
 import 'package:app_server/src/router/todo_controller.dart';
 import 'package:app_server/src/router/user_session_controller.dart';
 import 'package:firebase_admin/firebase_admin.dart' as firebase_admin;
@@ -42,6 +43,7 @@ Future<void> main() async {
   final handler = Cascade()
       .add(TodoController(todoRepository: todoRepository).router)
       .add(UserSessionController(todoRepository: todoRepository).router)
+      .add(BenchmarkController(todoRepository: todoRepository).router)
       .handler;
 
   final pipeline = Pipeline()

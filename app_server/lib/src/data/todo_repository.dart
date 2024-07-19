@@ -1,6 +1,7 @@
 import 'package:app_server/src/domain/todo_model.dart';
 import 'package:collection/collection.dart';
 import 'package:postgres/postgres.dart';
+import 'package:uuid/uuid.dart';
 
 class TodoRepository {
   final Connection _connection;
@@ -94,6 +95,16 @@ class TodoRepository {
               )
             : e)
         .toSet();
+  }
+
+  Future<void> benchmark() async {
+    await _connection.execute(
+        Sql.named('INSERT INTO benchmarks (uuid) '
+            'VALUES (@uuid) '
+            'RETURNING *'),
+        parameters: {
+          'uuid': const Uuid().v4(),
+        });
   }
 
   /// Проверяет наличие задачи в хранилище

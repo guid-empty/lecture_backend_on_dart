@@ -49,7 +49,8 @@ abstract class AuthenticationCheckMiddleware {
                 },
               );
             }
-          } else if (!request.url.path.contains('ws/connect')) {
+          } else if (!(request.url.path.contains('ws/connect') ||
+              request.url.path.contains('benchmark'))) {
             return _getUnauthorizedResponse(request);
           }
         } catch (_) {

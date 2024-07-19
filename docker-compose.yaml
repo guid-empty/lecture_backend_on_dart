@@ -3,9 +3,8 @@ version: '3.9'
 services:
   db:
     container_name: server-side-postgres-database
-    image: postgres
+    image: postgres:15.2
     restart: always
-    shm_size: 128mb
     environment:
       POSTGRES_PASSWORD: password
       PGDATA: /var/lib/postgresql/data/pgdata
@@ -17,15 +16,34 @@ services:
       intranet:
         aliases:
           - postgresql
+    command: postgres -c config_file=/var/lib/postgresql/data/pgdata/postgresql.conf
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres -p 5432 -h postgresql -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   adminer:
     container_name: server-side-adminer
-    image: adminer
+    image: adminer:4.8.1
     restart: always
     ports:
       - 8082:8080
     environment:
       ADMINER_DESIGN: dracula
+    networks:
+      - intranet
+
+  app_server:
+    container_name: server-side-app-server
+    build:
+      context: .
+      dockerfile: app_server.dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8082:8082
     networks:
       - intranet
 
