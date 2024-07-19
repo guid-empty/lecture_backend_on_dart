@@ -20,7 +20,7 @@ jobs:
       run:
         working-directory: ./
     env:
-      REMOTE_HOST_SSH_PASSWORD: ${{ secrets.REMOTE_YANDEX_CLOUD_HOST_SSH_PASSWORD }}
+      YC_FOLDER_ID: ${{ secrets.YC_FOLDER_ID }}
 
     steps:
       - name: Checkout Code
