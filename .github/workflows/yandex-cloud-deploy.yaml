@@ -40,5 +40,6 @@ jobs:
       - name: Push app-server to yandex cloud registry
         run: |
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest
+          docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-web-client-image:latest
 
 
