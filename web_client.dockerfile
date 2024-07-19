@@ -33,8 +33,6 @@ RUN export PUB_HOSTED_URL='https://pub.dev' \
     --dart-define=Dart2jsOptimization=O0  \
     --base-href="/"
 
-RUN ls -la /app/web_client/build/web
-
 RUN cp -R ./build/web/* /public/web_client/
 
 FROM alpine

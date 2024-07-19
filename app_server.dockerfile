@@ -20,6 +20,6 @@ FROM alpine
 COPY --from=build /runtime/ /
 COPY --from=build /app/app_server/ /app/app_server/
 
-EXPOSE 8082
+EXPOSE 8080
 WORKDIR /app/app_server/
 CMD ["./bin/server.exe"]

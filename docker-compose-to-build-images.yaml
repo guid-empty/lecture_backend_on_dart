@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  app_server:
+    container_name: server-side-app-server
+    environment:
+      POSTGRESQL_HOST: postgresql
+    build:
+      context: .
+      dockerfile: app_server.dockerfile
+    image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest
+
+  web_client:
+    container_name: server-side-web-client
+    build:
+      context: .
+      dockerfile: web_client.dockerfile
+    image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-web-client-image:latest

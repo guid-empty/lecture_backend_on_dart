@@ -16,7 +16,7 @@ Future<void> main() async {
   await LoggerSettings.initLogging(instancePrefix: 'SHMR Server');
   final connection = await Connection.open(
     Endpoint(
-      host: 'localhost',
+      host: Platform.environment['POSTGRESQL_HOST'] ?? 'localhost',
       database: 'shmr_todolist',
       username: 'postgres',
       password: 'password',
