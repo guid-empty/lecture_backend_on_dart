@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./app_server/pubspec.* /app/app_server/
 
 WORKDIR /app/app_server
-RUN dart pub get
+RUN  export PUB_HOSTED_URL='https://pub.dev' && dart pub get
 
 WORKDIR /app
 COPY ./app_server/lib /app/app_server/lib
