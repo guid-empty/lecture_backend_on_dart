@@ -43,5 +43,33 @@ services:
     networks:
       - intranet
 
+  web_client:
+    container_name: server-side-web-client
+    build:
+      context: .
+      dockerfile: web_client.dockerfile
+    image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-web-client:latest
+    volumes:
+      - app-volume:/public/web_client
+    stdin_open: true
+
+  nginx:
+    image: nginx:1.22.0
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+      - ./nginx/public:/public/
+      - ./nginx/usr/share/nginx:/usr/share/nginx/
+
+      - ./nginx/conf.dev.d:/etc/nginx/conf.d/
+      - app-volume:/public/web_client
+    networks:
+      - intranet
+
 networks:
   intranet:
+
+volumes:
+  app-volume:
