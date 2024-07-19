@@ -48,7 +48,7 @@ services:
     build:
       context: .
       dockerfile: web_client.dockerfile
-    image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-web-client:latest
+    image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-web-client-image:latest
     volumes:
       - app-volume:/public/web_client
     stdin_open: true
