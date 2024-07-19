@@ -28,5 +28,13 @@ jobs:
         with:
           ref: ${{ inputs.branch_name }}
 
+      - name: Login to Yandex Cloud Container Registry
+        id: login-cr
+        uses: yc-actions/yc-cr-login@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
       - name: Build docker images
         run: docker-compose -f docker-compose.yaml build
+
+

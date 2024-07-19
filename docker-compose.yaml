@@ -17,10 +17,6 @@ services:
         aliases:
           - postgresql
     command: postgres -c config_file=/var/lib/postgresql/data/pgdata/postgresql.conf
-    networks:
-      intranet:
-        aliases:
-          - postgresql
 
   adminer:
     container_name: server-side-adminer
