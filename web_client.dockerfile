@@ -35,9 +35,6 @@ RUN export PUB_HOSTED_URL='https://pub.dev' \
 
 RUN ls -la /app/web_client/build/web
 
-RUN export PUB_HOSTED_URL='https://pub.dev' &&  \
-    flutter packages pub run sentry_dart_plugin
-
 RUN cp -R ./build/web/* /public/web_client/
 
 FROM alpine
