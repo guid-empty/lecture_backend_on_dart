@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   db:
+    container_name: server-side-postgres-database
     image: postgres
     restart: always
     shm_size: 128mb
@@ -18,6 +19,7 @@ services:
           - postgresql
 
   adminer:
+    container_name: server-side-adminer
     image: adminer
     restart: always
     ports:
