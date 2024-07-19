@@ -1,0 +1,32 @@
+name: Yandex Cloud Deployment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      log_message:
+        required: false
+        description: "Message to be logged during the build stage"
+      branch_name:
+        required: true
+        description: "Branch name used to upload the project"
+        default: 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 60
+    continue-on-error: false
+    defaults:
+      run:
+        working-directory: ./
+    env:
+      REMOTE_HOST_SSH_PASSWORD: ${{ secrets.REMOTE_YANDEX_CLOUD_HOST_SSH_PASSWORD }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch_name }}
+
+      - name: Build docker images
+        run: docker-compose -f docker-compose.yaml build

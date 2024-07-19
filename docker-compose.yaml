@@ -13,6 +13,11 @@ services:
       - ./postgresql_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d postgres -p 5432 -h postgresql -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       intranet:
         aliases:
@@ -26,6 +31,19 @@ services:
       - 8082:8080
     environment:
       ADMINER_DESIGN: dracula
+    networks:
+      - intranet
+
+  app_server:
+    container_name: server-side-app-server
+    build:
+      context: .
+      dockerfile: app_server.dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8082:8082
     networks:
       - intranet
 
