@@ -4,7 +4,7 @@ RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjd
 ENV TZ="Europe/London"
 RUN date
 
-RUN git clone --branch 3.16.7 https://github.com/flutter/flutter.git /usr/local/flutter
+RUN git clone --branch 3.19.2 https://github.com/flutter/flutter.git /usr/local/flutter
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 RUN flutter --version
 RUN flutter config --enable-web
