@@ -37,6 +37,15 @@ jobs:
       - name: Build docker images
         run: docker-compose -f docker-compose.yaml build
 
+      - name: Push nginx/db/adminer to yandex cloud registry
+        run: |
+          docker tag postgres:15.2 cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
+          docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-postgres:latest
+          docker tag adminer:4.8.1 cr.yandex/crpld28mq3vgl8ej0eap/server-side-adminer:latest
+          docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-adminer:latest
+          docker tag nginx:1.22.0 cr.yandex/crpld28mq3vgl8ej0eap/server-side-nginx:latest
+          docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-nginx:latest
+
       - name: Push app-server to yandex cloud registry
         run: |
           docker push cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest

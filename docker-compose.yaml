@@ -20,7 +20,7 @@ services:
 
   adminer:
     container_name: server-side-adminer
-    image: adminer
+    image: adminer:4.8.1
     restart: always
     ports:
       - 8082:8080
@@ -54,6 +54,7 @@ services:
     stdin_open: true
 
   nginx:
+    container_name: server-side-nginx
     image: nginx:1.22.0
     restart: always
     ports:
