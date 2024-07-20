@@ -25,7 +25,7 @@ jobs:
         working-directory: ./
     env:
       # показать, как можно было бы использовать переменные окружения, а не только action secrets
-      # дальше в коде используем доступ через env. ({{ env.YC_REGISTRY_ID }})
+      # дальше в коде используем доступ через env. (${{ env.YC_REGISTRY_ID }})
       YC_REGISTRY_ID: ${{ secrets.YC_REGISTRY_ID }}
 
 
@@ -46,14 +46,14 @@ jobs:
       - name: Tag and push nginx/db/adminer images to yandex cloud registry
         run: |
           docker pull postgres:15.2
-          docker tag postgres:15.2 cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-postgres:latest
-          docker push cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-postgres:latest
+          docker tag postgres:15.2 cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-postgres:latest
+          docker push cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-postgres:latest
           docker pull adminer:4.8.1
-          docker tag adminer:4.8.1 cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-adminer:latest
-          docker push cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-adminer:latest
+          docker tag adminer:4.8.1 cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-adminer:latest
+          docker push cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-adminer:latest
           docker pull nginx:1.22.0
-          docker tag nginx:1.22.0 cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-nginx:latest
-          docker push cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-nginx:latest
+          docker tag nginx:1.22.0 cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-nginx:latest
+          docker push cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-nginx:latest
 
 
         # пример, как собрать именованные образы из docker-compose конфигурации
@@ -62,8 +62,8 @@ jobs:
 
       - name: Push app-server to yandex cloud registry
         run: |
-          docker push cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-app-server-image:latest
+          docker push cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-app-server-image:latest
 
       - name: Push web-client to yandex cloud registry
         run: |
-          docker push cr.yandex/{{ env.YC_REGISTRY_ID }}/server-side-web-client-image:latest
+          docker push cr.yandex/${{ env.YC_REGISTRY_ID }}/server-side-web-client-image:latest
