@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+
+  # для локальной работы конфигурация NGINX для обслуживания результатов сборки web_clien
+  # export PUB_HOSTED_URL='https://pub.dev' && fvm flutter clean && fvm flutter build web
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d/
+      - ./nginx/public:/public/
+      - ./nginx/usr/share/nginx:/usr/share/nginx/
+
+      - ./web_client/build/web:/public/web_client
+    networks:
+      - intranet
+
+networks:
+  intranet:
+
+volumes:
+  app-volume:
