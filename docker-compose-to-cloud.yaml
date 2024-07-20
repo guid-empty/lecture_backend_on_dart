@@ -43,6 +43,7 @@ services:
     image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest
     environment:
       POSTGRESQL_HOST: postgresql
+      POSTGRESQL_PASSWORD: password
     depends_on:
       db:
         condition: service_healthy

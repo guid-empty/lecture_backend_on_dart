@@ -22,7 +22,7 @@ Future<void> main() async {
       host: Platform.environment['POSTGRESQL_HOST'] ?? 'postgresql',
       database: 'shmr_todolist',
       username: 'postgres',
-      password: 'password',
+      password: Platform.environment['POSTGRESQL_PASSWORD'] ?? 'password',
     ),
     settings: ConnectionSettings(sslMode: SslMode.disable),
   );

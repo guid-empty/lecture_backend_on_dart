@@ -5,6 +5,7 @@ services:
     container_name: server-side-app-server
     environment:
       POSTGRESQL_HOST: postgresql
+      POSTGRESQL_PASSWORD: password
     build:
       context: .
       dockerfile: app_server.dockerfile
