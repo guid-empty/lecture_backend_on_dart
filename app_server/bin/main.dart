@@ -14,9 +14,12 @@ import 'package:shelf_cors_headers/shelf_cors_headers.dart' as cors;
 
 Future<void> main() async {
   await LoggerSettings.initLogging(instancePrefix: 'SHMR Server');
+  final connectionHost = Platform.environment['POSTGRESQL_HOST'];
+  logger.info('Postgresql connection Host is $connectionHost');
+
   final connection = await Connection.open(
     Endpoint(
-      host: Platform.environment['POSTGRESQL_HOST'] ?? 'localhost',
+      host: Platform.environment['POSTGRESQL_HOST'] ?? 'postgresql',
       database: 'shmr_todolist',
       username: 'postgres',
       password: 'password',
