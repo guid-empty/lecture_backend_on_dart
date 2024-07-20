@@ -9,6 +9,8 @@ services:
       context: .
       dockerfile: app_server.dockerfile
     image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest
+    networks:
+      - intranet
 
   web_client:
     container_name: server-side-web-client
@@ -16,3 +18,11 @@ services:
       context: .
       dockerfile: web_client.dockerfile
     image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-web-client-image:latest
+    networks:
+      - intranet
+
+networks:
+  intranet:
+
+volumes:
+  app-volume:
