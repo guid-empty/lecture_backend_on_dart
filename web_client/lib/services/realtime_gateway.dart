@@ -24,7 +24,7 @@ class RealtimeGateway {
   }) async {
     _channel?.sink.close(status.normalClosure);
     _channel = WebSocketChannel.connect(
-        Uri.parse('http://localhost:8080/ws/connect/$sessionId'));
+        Uri.parse('ws://localhost:8080/ws/connect/$sessionId'));
 
     _channelListenerSubscription = _channel?.stream.listen(
       (data) {
