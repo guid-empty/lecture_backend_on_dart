@@ -1,6 +1,4 @@
 FROM ubuntu:18.04 AS build
-ARG WEBSOCKET_SERVER_URL
-ARG APP_SERVER_URL
 
 RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget clang cmake ninja-build pkg-config nodejs npm
 ENV TZ="Europe/London"
@@ -26,13 +24,19 @@ COPY ./web_client/lib /app/web_client/lib
 COPY ./web_client/web /app/web_client/web
 
 WORKDIR /app/web_client
+ARG WEBSOCKET_SERVER_URL
+ARG APP_SERVER_URL
+
+RUN echo $APP_SERVER_URL
+RUN echo $WEBSOCKET_SERVER_URL
+
 #   используйте    --release \ для production сборки
 RUN export PUB_HOSTED_URL='https://pub.dev' \
     && flutter clean \
     && flutter build web \
     --no-tree-shake-icons \
-    --source-maps  \
-    --dart-define=WEBSOCKET_SERVER_URL="$WEBSOCKET_SERVER_URL"  \
+    --source-maps \
+    --dart-define=WEBSOCKET_SERVER_URL="$WEBSOCKET_SERVER_URL" \
     --dart-define=APP_SERVER_URL="$APP_SERVER_URL" \
     --base-href="/"
 
