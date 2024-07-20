@@ -1,6 +1,6 @@
 FROM ubuntu:18.04 AS build
 ARG WEBSOCKET_SERVER_URL
-ARG WEBSOCKET_SERVER_URL
+ARG APP_SERVER_URL
 
 RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget clang cmake ninja-build pkg-config nodejs npm
 ENV TZ="Europe/London"
