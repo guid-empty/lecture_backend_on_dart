@@ -8,6 +8,11 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef JSON = Map<String, dynamic>;
 
+String get webSocketHost => const String.fromEnvironment(
+      'WEBSOCKET_SERVER_URL',
+      defaultValue: 'ws://localhost',
+    );
+
 class RealtimeGateway {
   WebSocketChannel? _channel;
   StreamSubscription<dynamic>? _channelListenerSubscription;
@@ -24,7 +29,7 @@ class RealtimeGateway {
   }) async {
     _channel?.sink.close(status.normalClosure);
     _channel = WebSocketChannel.connect(
-        Uri.parse('ws://localhost:8080/ws/connect/$sessionId'));
+        Uri.parse('$webSocketHost:8080/ws/connect/$sessionId'));
 
     _channelListenerSubscription = _channel?.stream.listen(
       (data) {

@@ -6,11 +6,15 @@ import 'package:web_client/domain/todo_model.dart';
 class TodoApi {
   final Dio _dio;
 
+  String get appHost => const String.fromEnvironment(
+        'APP_SERVER_URL',
+        defaultValue: 'http://localhost',
+      );
+
   TodoApi({required Dio dio}) : _dio = dio;
 
   Future<Iterable<TodoModel>> getTodos() async {
-    final response =
-        await _dio.get<List<dynamic>>('http://localhost:8080/todo');
+    final response = await _dio.get<List<dynamic>>('$appHost:8080/todo');
     final json = response.data as List<dynamic>;
 
     return json.map((e) {
@@ -20,7 +24,7 @@ class TodoApi {
   }
 
   Future<void> saveTodo(String title, bool isCompleted) async {
-    await _dio.post<Map<String, dynamic>>('http://localhost:8080/create',
+    await _dio.post<Map<String, dynamic>>('$appHost:8080/create',
         data: CreateTodoRequest(
           isCompleted: isCompleted,
           title: title,
@@ -28,7 +32,7 @@ class TodoApi {
   }
 
   Future<void> updateTodo(int id, String title, bool isCompleted) async {
-    await _dio.put<Map<String, dynamic>>('http://localhost:8080/todo/$id',
+    await _dio.put<Map<String, dynamic>>('$appHost:8080/todo/$id',
         data: UpdateTodoRequest(
           isCompleted: isCompleted,
           title: title,

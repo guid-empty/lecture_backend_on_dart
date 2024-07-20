@@ -17,6 +17,9 @@ services:
     build:
       context: .
       dockerfile: web_client.dockerfile
+      args:
+        WEBSOCKET_SERVER_URL: ws://89.169.166.237
+        APP_SERVER_URL: http://89.169.166.237
     image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-web-client-image:latest
     networks:
       - intranet

@@ -1,4 +1,6 @@
 FROM ubuntu:18.04 AS build
+ARG WEBSOCKET_SERVER_URL
+ARG WEBSOCKET_SERVER_URL
 
 RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget clang cmake ninja-build pkg-config nodejs npm
 ENV TZ="Europe/London"
@@ -31,6 +33,8 @@ RUN export PUB_HOSTED_URL='https://pub.dev' \
     --no-tree-shake-icons \
     --source-maps  \
     --dart-define=Dart2jsOptimization=O0  \
+    --dart-define=WEBSOCKET_SERVER_URL="$WEBSOCKET_SERVER_URL"  \
+    --dart-define=APP_SERVER_URL="$APP_SERVER_URL" \
     --base-href="/"
 
 RUN cp -R ./build/web/* /public/web_client/
