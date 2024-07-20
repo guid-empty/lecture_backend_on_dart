@@ -26,13 +26,12 @@ COPY ./web_client/lib /app/web_client/lib
 COPY ./web_client/web /app/web_client/web
 
 WORKDIR /app/web_client
+#   используйте    --release \ для production сборки
 RUN export PUB_HOSTED_URL='https://pub.dev' \
     && flutter clean \
     && flutter build web \
-    --release \
     --no-tree-shake-icons \
     --source-maps  \
-    --dart-define=Dart2jsOptimization=O0  \
     --dart-define=WEBSOCKET_SERVER_URL="$WEBSOCKET_SERVER_URL"  \
     --dart-define=APP_SERVER_URL="$APP_SERVER_URL" \
     --base-href="/"
