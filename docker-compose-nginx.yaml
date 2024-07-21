@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
 
-  # для локальной работы конфигурация NGINX для обслуживания результатов сборки web_clien
+  # для локальной работы конфигурация NGINX для обслуживания результатов сборки web_client
   # export PUB_HOSTED_URL='https://pub.dev' && fvm flutter clean && fvm flutter build web
   nginx:
     image: nginx:latest

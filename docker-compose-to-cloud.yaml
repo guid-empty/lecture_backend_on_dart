@@ -18,11 +18,9 @@ services:
       - 5432:5432
     networks:
       intranet:
-        aliases:
-          - postgresql
     command: postgres -c config_file=/var/lib/postgresql/data/pgdata/postgresql.conf
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -d postgres -p 5432 -h postgresql -U postgres" ]
+      test: [ "CMD-SHELL", "pg_isready -d postgres -p 5432 -h localhost -U postgres" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -41,8 +39,9 @@ services:
   app_server:
     container_name: server-side-app-server
     image: cr.yandex/crpld28mq3vgl8ej0eap/server-side-app-server-image:latest
+    restart: always
     environment:
-      POSTGRESQL_HOST: postgresql
+      POSTGRESQL_HOST: db
       POSTGRESQL_PASSWORD: password
     depends_on:
       db:
