@@ -17,7 +17,7 @@ jobs:
   build:
     # список доступных образов, а также полный список всего софта на этих образах, можно увидеть на
     # https://github.com/actions/runner-images#available-images
-    runs-on: 24.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     continue-on-error: false
     defaults:
