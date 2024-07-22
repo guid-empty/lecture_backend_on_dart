@@ -58,7 +58,7 @@ jobs:
 
         # пример, как собрать именованные образы из docker-compose конфигурации
       - name: Build docker images
-        run: docker-compose -f docker-compose-to-build-images.yaml build
+        run: docker compose -f docker-compose-to-build-images.yaml build
 
       - name: Push app-server to yandex cloud registry
         run: |
